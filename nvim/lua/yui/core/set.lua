@@ -1,5 +1,7 @@
 local opt = vim.opt
 
+opt.inccommand = "split"
+
 -- line numbers
 opt.relativenumber = true
 opt.number = true

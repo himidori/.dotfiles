@@ -3,11 +3,15 @@ return {
     dependencies = {
         "rcarriga/nvim-dap-ui",
         "nvim-neotest/nvim-nio",
-        "leoluz/nvim-dap-go"
+        "leoluz/nvim-dap-go",
+        "theHamsta/nvim-dap-virtual-text"
     },
     config = function ()
         local dap, dapui = require("dap"), require("dapui")
-        dapui.setup()
+
+        require("dapui").setup()
+        require("dap-go").setup()
+        require("nvim-dap-virtual-text").setup()
 
         dap.listeners.before.attach.dapui_config = function()
             dapui.open()
@@ -22,12 +26,14 @@ return {
             dapui.close()
         end
 
-        vim.keymap.set('n', '<Leader>dt', dap.toggle_breakpoint, {})
-        vim.keymap.set('n', '<Leader>dc', dap.continue, {})
-        vim.keymap.set('n', '<Leader>td', dap.continue, {})
+        vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint)
+        vim.keymap.set('n', '<leader>dc', dap.continue)
+
+        vim.keymap.set("n", "<leader>?", function ()
+            require("dapui").eval(nil, { enter = true })
+        end)
 
         local dapgo = require("dap-go")
-        dapgo.setup()
-        vim.keymap.set("n", "<leader>td", dapgo.debug_test, {})
+        vim.keymap.set("n", "<leader>td", dapgo.debug_test)
     end
 }
