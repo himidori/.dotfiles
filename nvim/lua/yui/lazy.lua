@@ -15,9 +15,6 @@ require("lazy").setup({
 	{ import = "yui.plugins" },
 	{ import = "yui.plugins.lsp" },
 }, {
-	install = {
-		colorscheme = { "catppuccin-mocha" },
-	},
 	checker = {
 		enabled = true,
 		notify = false,

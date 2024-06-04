@@ -39,8 +39,8 @@ return {
 		capabilities = cmp.default_capabilities(capabilities)
 
 		local servers = {
-			clangd = {},
-			cssls = {},
+			-- clangd = {},
+			-- cssls = {},
 			gopls = {
 				settings = {
 					gopls = {
@@ -51,7 +51,7 @@ return {
 					},
 				},
 			},
-			html = {},
+			-- html = {},
 			lua_ls = {
 				Lua = {
 					workspace = {
@@ -67,23 +67,23 @@ return {
 					},
 				},
 			},
-			rust_analyzer = {},
-			tsserver = {},
-			eslint = {},
-			emmet_ls = {},
+			-- rust_analyzer = {},
+			-- tsserver = {},
+			-- eslint = {},
+			-- emmet_ls = {},
 		}
 
 		mason_lspconfig.setup({
 			ensure_installed = vim.tbl_keys(servers),
 		})
 
-		tool_installer.setup({
-			ensure_installed = {
-				"eslint_d",
-				"clang-format",
-				"stylua",
-			},
-		})
+		-- tool_installer.setup({
+		-- 	ensure_installed = {
+		-- 		"eslint_d",
+		-- 		"clang-format",
+		-- 		"stylua",
+		-- 	},
+		-- })
 
 		mason_lspconfig.setup_handlers({
 			function(server_name)
@@ -103,11 +103,6 @@ return {
 			callback = function()
 				local params = vim.lsp.util.make_range_params()
 				params.context = { only = { "source.organizeImports" } }
-				-- buf_request_sync defaults to a 1000ms timeout. Depending on your
-				-- machine and codebase, you may want longer. Add an additional
-				-- argument after params if you find that you have to write the file
-				-- twice for changes to be saved.
-				-- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
 				local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
 				for cid, res in pairs(result or {}) do
 					for _, r in pairs(res.result or {}) do

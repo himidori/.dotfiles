@@ -4,7 +4,7 @@ return {
     opts = {
         options = {
             icons_enabled = true,
-            theme = 'auto',
+            theme = "catppuccin",
             -- component_separators = { left = '', right = ''},
             component_separators = { left = '', right = ''},
             section_separators = { left = '', right = ''},
@@ -42,6 +42,5 @@ return {
         winbar = {},
         inactive_winbar = {},
         extensions = {}
-
     }
 }
