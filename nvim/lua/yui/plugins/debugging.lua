@@ -26,6 +26,16 @@ return {
             dapui.close()
         end
 
+        require("dap.ext.vscode").load_launchjs()
+        -- local continue = function ()
+        --     if vim.fn.filereadable(".vscode/launch.json") then
+        --         print("launch json found")
+        --         require("dap.ext.vscode").load_launchjs()
+        --     end
+        --     print("launch json not found")
+        --     dap.continue()
+        -- end
+
         vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint)
         vim.keymap.set('n', '<leader>dc', dap.continue)
 

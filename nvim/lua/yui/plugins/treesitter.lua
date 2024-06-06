@@ -8,20 +8,20 @@ return {
         vim.defer_fn(function()
             require('nvim-treesitter.configs').setup {
                 -- Add languages to be installed here that you want installed for treesitter
-                ensure_installed = { 
-                    "c", 
-                    "cpp", 
-                    "go", 
+                ensure_installed = {
+                    "c",
+                    "cpp",
+                    "go",
                     "gomod",
                     "gosum",
-                    "lua", 
-                    "python", 
-                    "rust", 
-                    "tsx", 
-                    "javascript", 
-                    "typescript", 
-                    "vimdoc", 
-                    "vim", 
+                    "lua",
+                    "python",
+                    "rust",
+                    "tsx",
+                    "javascript",
+                    "typescript",
+                    "vimdoc",
+                    "vim",
                     "bash",
                     "sql",
                     "dot",
@@ -45,7 +45,7 @@ return {
 
                 highlight = {
                     enable = true,
-                    disable = function(lang, buf)
+                    disable = function(_, buf)
                         local max_filesize = 100 * 1024 -- 100 KB
                         local ok, stats = pcall(
                             vim.loop.fs_stat,

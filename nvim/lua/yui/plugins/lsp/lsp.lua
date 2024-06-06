@@ -4,6 +4,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		"neovim/nvim-lspconfig",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		{ "j-hui/fidget.nvim", opts = {} },
 	},
 	config = function()
 		local mason = require("mason")
@@ -16,27 +17,30 @@ return {
 		local lspconfig = require("lspconfig")
 		local cmp = require("cmp_nvim_lsp")
 		local keymap = vim.keymap
+		local builtin = require("telescope.builtin")
 
 		local on_attach = function(_, bufnr)
-			local opts = { noremap = true, silent = true, buffer = bufnr }
+			local map = function(keys, func, desc)
+				keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc, noremap = true, silent = true })
+			end
 
-			keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
-			keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-			keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
-			keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts)
-			keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-			keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-			keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
-			keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-			keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-			keymap.set("n", "K", vim.lsp.buf.hover, opts)
-			keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
-			keymap.set("n", "<leader>ds", "<cmd>Telescope lsp_document_symbols<CR>", opts)
-			keymap.set("n", "<C-space>", vim.lsp.buf.completion, opts)
+			map("gd", builtin.lsp_definitions, "[G]oto [D]efinitions")
+			map("gr", builtin.lsp_references, "[G]oto [R]eferences")
+			map("gi", builtin.lsp_implementations, "[G]oto [I]mplementations")
+			map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+			map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+			map("<leader>D", builtin.lsp_type_definitions, "Type [D]efinition")
+			map("<leader>ds", builtin.lsp_document_symbols, "[D]ocument [S]ymbols")
+			map("<leader>ws", builtin.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+			map("K", vim.lsp.buf.hover, "Hover documentation")
+			map("[d", vim.diagnostic.goto_prev, "")
+			map("]d", vim.diagnostic.goto_next, "")
+			map("<C-h>", vim.lsp.buf.signature_help, "")
+			map("<C-space>", vim.lsp.buf.completion, "")
 		end
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		capabilities = cmp.default_capabilities(capabilities)
+		capabilities = vim.tbl_deep_extend("force", capabilities, cmp.default_capabilities())
 
 		local servers = {
 			-- clangd = {},
@@ -77,13 +81,11 @@ return {
 			ensure_installed = vim.tbl_keys(servers),
 		})
 
-		-- tool_installer.setup({
-		-- 	ensure_installed = {
-		-- 		"eslint_d",
-		-- 		"clang-format",
-		-- 		"stylua",
-		-- 	},
-		-- })
+		tool_installer.setup({
+			ensure_installed = {
+				"stylua",
+			},
+		})
 
 		mason_lspconfig.setup_handlers({
 			function(server_name)

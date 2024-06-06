@@ -26,8 +26,10 @@ opt.undofile = true
 -- search settings
 opt.ignorecase = true
 opt.smartcase = true
-opt.hlsearch = false
+opt.hlsearch = true
 opt.incsearch = true
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
 
 -- appearance
 opt.termguicolors = true
@@ -37,7 +39,7 @@ opt.background = "dark"
 opt.backspace = "indent,eol,start"
 
 -- clipboard
-opt.clipboard:append("unnamedplus")
+opt.clipboard = "unnamedplus"
 
 -- split windows
 opt.splitright = true
@@ -55,5 +57,16 @@ opt.updatetime = 50
 opt.colorcolumn = "80"
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 opt.colorcolumn = "122"
+
+opt.showmode = false
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Highlight when yanking (copying) text",
+    group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
+    callback = function ()
+        vim.highlight.on_yank()
+    end,
+})
