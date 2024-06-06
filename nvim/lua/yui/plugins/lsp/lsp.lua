@@ -5,6 +5,7 @@ return {
 		"neovim/nvim-lspconfig",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		{ "j-hui/fidget.nvim", opts = {} },
+		"ray-x/lsp_signature.nvim",
 	},
 	config = function()
 		local mason = require("mason")
@@ -37,6 +38,8 @@ return {
 			map("]d", vim.diagnostic.goto_next, "")
 			map("<C-h>", vim.lsp.buf.signature_help, "")
 			map("<C-space>", vim.lsp.buf.completion, "")
+
+			require("lsp_signature").on_attach({}, bufnr)
 		end
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
